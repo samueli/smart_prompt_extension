@@ -1,0 +1,257 @@
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 24px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+.header {
+  margin-bottom: 32px;
+  text-align: center;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.logo img {
+  width: 24px;
+  height: 24px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.logo:hover img {
+  transform: scale(1.1);
+}
+
+.logo a {
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.logo a:hover {
+  opacity: 0.9;
+}
+
+.logo h1 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: #111827;
+  letter-spacing: -0.01em;
+  position: relative;
+}
+
+.logo h1::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: right;
+}
+
+.logo a:hover h1::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+.header-content {
+  max-width: 460px;
+  margin: 0 auto;
+}
+
+.subtitle {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #6B7280;
+  margin-bottom: 24px;
+}
+
+.divider {
+  height: 1px;
+  background: linear-gradient(to right, transparent, #E5E7EB 20%, #E5E7EB 80%, transparent);
+  margin: 0 -24px;
+}
+
+.setting-group {
+  margin-top: 32px;
+  margin-bottom: 24px;
+}
+
+.token-group {
+  display: flex;
+  gap: 12px;
+}
+
+.token-group input {
+  flex: 1;
+}
+
+.icon-button {
+  padding: 0;
+  width: 40px;
+  min-width: 40px;
+  height: 40px;
+  border: 1px solid #E5E7EB;
+  background: #fff;
+  color: #374151;
+  transition: all 0.2s ease;
+}
+
+.icon-button:hover {
+  background: #F9FAFB;
+  border-color: #D1D5DB;
+  transform: none;
+  box-shadow: none;
+}
+
+.icon-button:active {
+  background: #F3F4F6;
+}
+
+.icon-button .material-symbols-rounded {
+  font-size: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #111827;
+}
+
+select, input {
+  width: calc(100% - 16px);
+  padding: 12px;
+  margin-bottom: 8px;
+  border: 1px solid #E5E7EB;
+  border-radius: 12px;
+  background: #F9FAFB;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+select:focus, input:focus {
+  outline: none;
+  border-color: #111827;
+  background: #fff;
+}
+
+button {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 12px;
+  background-color: #4F46E5;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+button:hover {
+  transform: translateY(-1px);
+  background-color: #4338CA;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+button:active {
+  transform: translateY(0);
+  background-color: #3730A3;
+  box-shadow: none;
+}
+
+.toast {
+  position: fixed;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100%);
+  padding: 8px 16px;
+  border-radius: 4px;
+  background-color: #333;
+  color: white;
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.toast.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+.toast-success {
+  background-color: #4CAF50;
+}
+
+#saveBtn {
+  background-color: #111827;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+}
+
+#saveBtn:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.button-group {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 40px;
+}
+
+.secondary-button {
+  background-color: #fff;
+  color: #4F46E5;
+  border: 1px solid #E0E7FF;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.secondary-button:hover {
+  background-color: #F5F3FF;
+  border-color: #C7D2FE;
+  color: #4338CA;
+}
+
+.secondary-button:active {
+  background-color: #EEF2FF;
+  border-color: #A5B4FC;
+  color: #3730A3;
+}
+
+.secondary-button span:last-child {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.footer {
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid #E5E7EB;
+  text-align: center;
+  color: #6B7280;
+  font-size: 13px;
+}
+
+.footer p {
+  margin: 0;
+} 

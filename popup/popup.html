@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="popup.css">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="logo">
+        <img src="../assets/icon32.png" alt="Smart Prompt" />
+        <a href="https://prompt.playwithai.fun" target="_blank" rel="noopener">
+          <h1 id="extensionTitle"></h1>
+        </a>
+      </div>
+      <p class="subtitle" id="extensionDesc"></p>
+    </div>
+    <div class="form-group">
+      <label for="promptInput" id="sourcePromptLabel"></label>
+      <textarea id="promptInput" rows="6"></textarea>
+    </div>
+    <div class="form-options">
+      <div class="option-group">
+        <label for="businessScenario" id="businessScenarioLabel">业务场景</label>
+        <select id="businessScenario">
+          <option value="general">通用对话</option>
+          <option value="coding">代码编程</option>
+          <option value="writing">文章写作</option>
+          <option value="official">公文写作</option>
+          <option value="translation">语言翻译</option>
+          <option value="analysis">数据分析</option>
+          <option value="roleplay">角色扮演</option>
+          <option value="marketing">营销文案</option>
+          <option value="email">邮件写作</option>
+          <option value="academic">学术写作</option>
+          <option value="storytelling">故事创作</option>
+          <option value="interview">面试对话</option>
+          <option value="teaching">教学辅导</option>
+          <option value="presentation">演讲稿写作</option>
+        </select>
+      </div>
+      <div class="option-group">
+        <label for="optimizationFramework" id="frameworkLabel">优化框架</label>
+        <select id="optimizationFramework">
+          <option value="general">通用优化</option>
+          <option value="broke">BROKE</option>
+          <option value="ape">APE</option>
+          <option value="langgpt">LangGPT</option>
+          <option value="wizard">PromptWizard</option>
+        </select>
+        <div class="framework-desc"></div>
+      </div>
+      <div class="option-group">
+        <label for="outputFormat" id="formatLabel">输出格式</label>
+        <select id="outputFormat">
+          <option value="text">纯文本</option>
+          <option value="xml">XML</option>
+          <option value="json">JSON</option>
+          <option value="markdown">Markdown</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group optimized-group" style="display: none;">
+      <label for="optimizedInput" id="optimizedPromptLabel"></label>
+      <textarea id="optimizedInput" rows="6" readonly></textarea>
+    </div>
+    <div class="button-group">
+      <button id="optimizeBtn" disabled>
+        <span class="material-symbols-rounded">auto_fix_high</span>
+        <span class="button-text"></span>
+      </button>
+      <button id="saveBtn" disabled>
+        <span class="material-symbols-rounded">bookmark_add</span>
+        <span class="button-text"></span>
+      </button>
+    </div>
+  </div>
+  <script src="../js/utils.js"></script>
+  <script src="../js/api.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html> 

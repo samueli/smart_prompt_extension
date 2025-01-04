@@ -1,0 +1,146 @@
+{
+  "extensionName": {
+    "message": "Smart Prompt"
+  },
+  "extensionDescription": {
+    "message": "一键优化和管理你的AI提示词"
+  },
+  "saveButton": {
+    "message": "一键保存"
+  },
+  "optimizeButton": {
+    "message": "智能优化"
+  },
+  "createPrompt": {
+    "message": "创建提示词"
+  },
+  "learnMore": {
+    "message": "了解更多"
+  },
+  "quickStart": {
+    "message": "快速开始"
+  },
+  "quickStartDesc": {
+    "message": "只需几个简单的步骤，即可开始使用智能提示词"
+  },
+  "settingsTitle": {
+    "message": "设置"
+  },
+  "languageLabel": {
+    "message": "语言"
+  },
+  "tokenLabel": {
+    "message": "API令牌"
+  },
+  "generateToken": {
+    "message": "生成令牌"
+  },
+  "saveSettings": {
+    "message": "保存设置"
+  },
+  "promptPlaceholder": {
+    "message": "在此输入提示词，支持多行文本..."
+  },
+  "savingPrompt": {
+    "message": "正在保存提示词..."
+  },
+  "optimizingPrompt": {
+    "message": "正在优化提示词..."
+  },
+  "savedSuccess": {
+    "message": "提示词保存成功！"
+  },
+  "optimizedSuccess": {
+    "message": "提示词优化成功！"
+  },
+  "errorNoToken": {
+    "message": "请先在设置中设置API令牌"
+  },
+  "errorSaving": {
+    "message": "保存提示词时出错"
+  },
+  "errorOptimizing": {
+    "message": "优化提示词时出错"
+  },
+  "settingsSaved": {
+    "message": "设置保存成功！"
+  },
+  "formTitle": {
+    "message": "提示词"
+  },
+  "subtitle": {
+    "message": "优化和管理你的AI提示词"
+  },
+  "sourcePromptLabel": {
+    "message": "原始提示词"
+  },
+  "optimizedPromptLabel": {
+    "message": "优化后的提示词"
+  },
+  "businessScenarioLabel": {
+    "message": "业务场景"
+  },
+  "frameworkLabel": {
+    "message": "优化框架"
+  },
+  "formatLabel": {
+    "message": "输出格式"
+  },
+  "scenarioGeneral": {
+    "message": "通用对话"
+  },
+  "scenarioCoding": {
+    "message": "代码编程"
+  },
+  "scenarioWriting": {
+    "message": "文章写作"
+  },
+  "scenarioOfficial": {
+    "message": "公文写作"
+  },
+  "scenarioTranslation": {
+    "message": "语言翻译"
+  },
+  "scenarioAnalysis": {
+    "message": "数据分析"
+  },
+  "scenarioRoleplay": {
+    "message": "角色扮演"
+  },
+  "scenarioMarketing": {
+    "message": "营销文案"
+  },
+  "scenarioEmail": {
+    "message": "邮件写作"
+  },
+  "scenarioAcademic": {
+    "message": "学术写作"
+  },
+  "scenarioStorytelling": {
+    "message": "故事创作"
+  },
+  "scenarioInterview": {
+    "message": "面试对话"
+  },
+  "scenarioTeaching": {
+    "message": "教学辅导"
+  },
+  "scenarioPresentation": {
+    "message": "演讲稿写作"
+  },
+  "formatText": {
+    "message": "纯文本"
+  },
+  "formatXml": {
+    "message": "XML"
+  },
+  "formatJson": {
+    "message": "JSON"
+  },
+  "formatMarkdown": {
+    "message": "Markdown"
+  },
+  "viewProfile": {
+    "message": "我的提示词"
+  }
+} 

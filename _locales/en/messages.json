@@ -1,0 +1,146 @@
+{
+  "extensionName": {
+    "message": "Smart Prompt"
+  },
+  "extensionDescription": {
+    "message": "Save and optimize your prompts"
+  },
+  "saveButton": {
+    "message": "Save"
+  },
+  "optimizeButton": {
+    "message": "Optimize"
+  },
+  "settingsTitle": {
+    "message": "Settings"
+  },
+  "languageLabel": {
+    "message": "Language"
+  },
+  "tokenLabel": {
+    "message": "API Token"
+  },
+  "generateToken": {
+    "message": "Generate"
+  },
+  "saveSettings": {
+    "message": "Save Settings"
+  },
+  "sourcePromptLabel": {
+    "message": "Source Prompt"
+  },
+  "optimizedPromptLabel": {
+    "message": "Optimized Prompt"
+  },
+  "promptPlaceholder": {
+    "message": "Enter your prompt here..."
+  },
+  "savingPrompt": {
+    "message": "Saving prompt..."
+  },
+  "optimizingPrompt": {
+    "message": "Optimizing prompt..."
+  },
+  "savedSuccess": {
+    "message": "Prompt saved successfully!"
+  },
+  "optimizedSuccess": {
+    "message": "Prompt optimized successfully!"
+  },
+  "errorNoToken": {
+    "message": "Please set your API token in settings first"
+  },
+  "errorSaving": {
+    "message": "Error saving prompt"
+  },
+  "errorOptimizing": {
+    "message": "Error optimizing prompt"
+  },
+  "settingsSaved": {
+    "message": "Settings saved successfully!"
+  },
+  "scenarioGeneral": {
+    "message": "General Conversation"
+  },
+  "scenarioCoding": {
+    "message": "Code Programming"
+  },
+  "scenarioWriting": {
+    "message": "Article Writing"
+  },
+  "scenarioOfficial": {
+    "message": "Official Document"
+  },
+  "scenarioTranslation": {
+    "message": "Language Translation"
+  },
+  "scenarioAnalysis": {
+    "message": "Data Analysis"
+  },
+  "scenarioRoleplay": {
+    "message": "Role Playing"
+  },
+  "scenarioMarketing": {
+    "message": "Marketing Copy"
+  },
+  "scenarioEmail": {
+    "message": "Email Writing"
+  },
+  "scenarioAcademic": {
+    "message": "Academic Writing"
+  },
+  "scenarioStorytelling": {
+    "message": "Story Creation"
+  },
+  "scenarioInterview": {
+    "message": "Interview Dialogue"
+  },
+  "scenarioTeaching": {
+    "message": "Teaching Assistant"
+  },
+  "scenarioPresentation": {
+    "message": "Speech Writing"
+  },
+  "viewProfile": {
+    "message": "My Prompts"
+  },
+  "createPrompt": {
+    "message": "Create Prompt"
+  },
+  "learnMore": {
+    "message": "Learn More"
+  },
+  "quickStart": {
+    "message": "Quick Start"
+  },
+  "quickStartDesc": {
+    "message": "Get started with Smart Prompt in just a few simple steps"
+  },
+  "formTitle": {
+    "message": "Prompt"
+  },
+  "subtitle": {
+    "message": "Save and optimize your prompts"
+  },
+  "businessScenarioLabel": {
+    "message": "Business Scenario"
+  },
+  "frameworkLabel": {
+    "message": "Optimization Framework"
+  },
+  "formatLabel": {
+    "message": "Output Format"
+  },
+  "formatText": {
+    "message": "Plain Text"
+  },
+  "formatXml": {
+    "message": "XML"
+  },
+  "formatJson": {
+    "message": "JSON"
+  },
+  "formatMarkdown": {
+    "message": "Markdown"
+  }
+} 
