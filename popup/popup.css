@@ -9,6 +9,37 @@
 .header {
   margin-bottom: 32px;
   text-align: center;
+  position: relative;
+}
+
+.header-right {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: #6B7280;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.icon-button:hover {
+  background: #F3F4F6;
+  color: #3B82F6;
+}
+
+.icon-button .material-symbols-rounded {
+  font-size: 20px;
 }
 
 .logo {
@@ -80,8 +111,8 @@
 
 .form-options {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
+  grid-template-columns: minmax(120px, 1fr) minmax(140px, 1fr) minmax(120px, 1fr);
+  gap: 12px;
   margin: 0 0 24px;
   padding: 16px;
   background: #F9FAFB;
@@ -93,25 +124,33 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
+  min-width: 0; /* 防止内容溢出 */
+  position: relative;
 }
 
 .option-group label {
   font-size: 12px;
   font-weight: 500;
   color: #374151;
+  white-space: nowrap; /* 防止文本换行 */
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .option-group select {
   width: 100%;
-  padding: 10px;
+  padding: 8px 12px;
+  font-size: 13px;
+  line-height: 1.4;
+  color: #111827;
+  background: #fff url("data:image/svg+xml,%3Csvg width='12' height='12' viewBox='0 0 12 12' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2.5 4.5L6 8L9.5 4.5' stroke='%236B7280' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 12px center;
   border: 1px solid #E5E7EB;
   border-radius: 8px;
-  background: #fff;
-  font-size: 13px;
-  color: #111827;
+  appearance: none;
   cursor: pointer;
-  transition: all 0.2s ease;
-  box-sizing: border-box;
+  transition: all 0.2s;
+  min-width: 0; /* 防止内容溢出 */
+  position: relative;
 }
 
 .option-group select:hover {
@@ -120,38 +159,91 @@
 
 .option-group select:focus {
   outline: none;
-  border-color: #111827;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  border-color: #3B82F6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+}
+
+.option-group select:hover::after {
+  content: attr(title);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 8px 12px;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+.option-group select option {
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.option-group select option:hover {
+  background-color: #F3F4F6;
+}
+
+.option-group select option[title]:hover::after {
+  content: attr(title);
+  position: absolute;
+  top: 100%;
+  left: 0;
+  padding: 8px 12px;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 1000;
+  pointer-events: none;
 }
 
 .optimized-group {
   position: relative;
-  visibility: hidden;
-  opacity: 0;
-  max-height: 0;
+  display: none;
   margin: 0;
-  overflow: hidden;
-  transition: all 0.3s ease;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 .optimized-group.show {
-  visibility: visible;
-  opacity: 1;
-  max-height: 500px;
+  display: block;
   margin: 0 0 24px;
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .optimized-group textarea {
   background: #fff;
-  border-color: #111827;
+  border: 1px solid #E5E7EB;
+  border-radius: 12px;
   width: 100%;
+  padding: 16px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #111827;
   box-sizing: border-box;
+  resize: vertical;
+  min-height: 100px;
+  max-height: 300px;
+}
+
+.optimized-group textarea:focus {
+  outline: none;
+  border-color: #3B82F6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
 }
 
 .optimized-group::before {
   content: '';
   position: absolute;
-  top: 30px;
+  top: -20px;
   left: 50%;
   transform: translateX(-50%);
   width: 2px;
@@ -269,20 +361,19 @@ button:active {
   bottom: 20px;
   left: 50%;
   transform: translateX(-50%) translateY(100%);
-  padding: 12px 16px;
-  border-radius: 12px;
-  background-color: #fff;
-  color: #111827;
-  opacity: 0;
-  transition: all 0.2s ease;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
   font-size: 14px;
-  font-weight: 500;
+  z-index: 1000;
+  opacity: 0;
+  transition: all 0.3s ease;
+  white-space: nowrap;
   display: flex;
   align-items: center;
   gap: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  z-index: 1000;
-  border: 1px solid #E5E7EB;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .toast.show {
@@ -290,16 +381,26 @@ button:active {
   opacity: 1;
 }
 
-.toast-error {
-  border-color: #FCA5A5;
-  background-color: #FEF2F2;
-  color: #DC2626;
+.toast.success {
+  background: rgba(34, 197, 94, 0.9);
 }
 
-.toast-success {
-  border-color: #86EFAC;
-  background-color: #F0FDF4;
-  color: #16A34A;
+.toast.error {
+  background: rgba(239, 68, 68, 0.9);
+}
+
+.toast.info {
+  background: rgba(59, 130, 246, 0.9);
+}
+
+.toast a {
+  color: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.toast a:hover {
+  text-decoration: none;
 }
 
 .toast::before {
@@ -337,22 +438,52 @@ button:active {
   }
 }
 
+/* Tooltip 样式 */
+.tooltip {
+  position: fixed; /* 改为 fixed 定位 */
+  left: 0 !important; /* 固定在左边 */
+  right: 0 !important; /* 固定在右边 */
+  margin: 0 !important; /* 移除边距 */
+  padding: 12px 16px;
+  background: rgba(0, 0, 0, 0.85);
+  color: white;
+  border-radius: 0; /* 移除圆角 */
+  font-size: 13px;
+  line-height: 1.6;
+  z-index: 1000;
+  white-space: normal;
+  word-wrap: break-word;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.3s, visibility 0s linear 0.3s;
+  pointer-events: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.tooltip.show {
+  visibility: visible;
+  opacity: 1;
+  transition-delay: 0s;
+}
+
+/* 移除箭头 */
+.tooltip::before {
+  display: none;
+}
+
 /* 添加文本框滚动条样式 */
 textarea::-webkit-scrollbar {
   width: 6px;
 }
-
 textarea::-webkit-scrollbar-track {
   background: transparent;
 }
-
 textarea::-webkit-scrollbar-thumb {
   background: #E5E7EB;
   border-radius: 4px;
   border: 2px solid transparent;
   background-clip: padding-box;
 }
-
 textarea::-webkit-scrollbar-thumb:hover {
   background: #D1D5DB;
   border: 2px solid transparent;
@@ -360,24 +491,91 @@ textarea::-webkit-scrollbar-thumb:hover {
 }
 
 .framework-desc {
-  display: none;
   position: absolute;
-  left: 0;
-  right: 0;
+  width: 280px;
+  left: 50%;
   top: 100%;
-  margin-top: 4px;
-  padding: 12px;
+  transform: translateX(-50%);
+  margin-top: 8px;
   background: #fff;
-  border: 1px solid #E5E7EB;
+  border: 1px solid #ddd;
   border-radius: 8px;
-  font-size: 12px;
+  padding: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  font-size: 14px;
   line-height: 1.5;
-  color: #374151;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  z-index: 10;
-  max-width: 300px;
+  color: #333;
+  display: none;
+}
+
+.framework-desc::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 8px solid #ddd;
+}
+
+.framework-desc::after {
+  content: '';
+  position: absolute;
+  top: -7px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-bottom: 7px solid #fff;
 }
 
 .option-group:hover .framework-desc {
   display: block;
-} 
+}
+
+.footer {
+  margin-top: 32px;
+  padding-top: 16px;
+  border-top: 1px solid #E5E7EB;
+  text-align: center;
+}
+
+.footer p {
+  margin: 0;
+  font-size: 12px;
+  color: #9CA3AF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.feedback-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: #9CA3AF;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.feedback-link:hover {
+  color: #3B82F6;
+}
+
+.feedback-link .material-symbols-rounded {
+  font-size: 12px;
+}
+
+/* 确保选项组有相对定位，这样提示框的绝对定位会基于它 */
+.option-group {
+  position: relative;
+}
+
+/* 当提示框显示时的样式 */
+.framework-desc.show {
+  display: block;
+}

@@ -1,145 +1,189 @@
+import { i18n } from '../js/i18n.js';
+import { Utils } from '../js/utils.js';
+import { API } from '../js/api.js';
+
 document.addEventListener('DOMContentLoaded', async () => {
-  // 获取当前语言设置
-  const { language = 'en' } = await chrome.storage.local.get('language');
-  document.documentElement.lang = language;
+  // 初始化 i18n
+  await i18n.init();
+  
+  // 获取所有需要的 DOM 元素
+  const promptInput = document.getElementById('promptInput');
+  const businessScenario = document.getElementById('businessScenario');
+  const optimizationFramework = document.getElementById('optimizationFramework');
+  const outputFormat = document.getElementById('outputFormat');
+  const optimizeBtn = document.getElementById('optimizeBtn');
+  const saveBtn = document.getElementById('saveBtn');
+  const optimizedInput = document.getElementById('optimizedInput');
+  const optimizedGroup = document.querySelector('.optimized-group');
+  const frameworkDescEl = document.querySelector('.framework-desc');
+  const settingsBtn = document.getElementById('settingsBtn');
+
+  // 设置按钮点击事件
+  settingsBtn.addEventListener('click', () => {
+    chrome.runtime.openOptionsPage();
+  });
+
+  // 确保优化结果区域初始隐藏
+  if (optimizedGroup) {
+    optimizedGroup.classList.remove('show');
+  }
+
+  console.log('DOM Elements:', {
+    promptInput,
+    businessScenario,
+    optimizationFramework,
+    outputFormat,
+    optimizeBtn,
+    saveBtn,
+    optimizedInput,
+    optimizedGroup,
+    frameworkDescEl
+  });
 
   // 封装所有文本更新逻辑
   const updateAllText = () => {
-    console.log('Updating all text content with language:', document.documentElement.lang);
+    console.log('Updating all text content with language:', i18n.getCurrentLanguage());
     
     // 更新静态文本
-    document.getElementById('extensionTitle').textContent = chrome.i18n.getMessage('extensionName');
-    document.getElementById('extensionDesc').textContent = chrome.i18n.getMessage('extensionDescription');
-    document.getElementById('sourcePromptLabel').textContent = chrome.i18n.getMessage('sourcePromptLabel');
-    document.getElementById('optimizedPromptLabel').textContent = chrome.i18n.getMessage('optimizedPromptLabel');
-    document.getElementById('businessScenarioLabel').textContent = chrome.i18n.getMessage('businessScenarioLabel');
-    document.getElementById('frameworkLabel').textContent = chrome.i18n.getMessage('frameworkLabel');
-    document.getElementById('formatLabel').textContent = chrome.i18n.getMessage('formatLabel');
+    document.getElementById('extensionTitle').textContent = i18n.getMessage('extensionName');
+    document.getElementById('extensionDesc').textContent = i18n.getMessage('extensionDescription');
+    document.getElementById('sourcePromptLabel').textContent = i18n.getMessage('sourcePromptLabel');
+    document.getElementById('optimizedPromptLabel').textContent = i18n.getMessage('optimizedPromptLabel');
+    document.getElementById('businessScenarioLabel').textContent = i18n.getMessage('businessScenarioLabel');
+    document.getElementById('frameworkLabel').textContent = i18n.getMessage('frameworkLabel');
+    document.getElementById('formatLabel').textContent = i18n.getMessage('formatLabel');
     
     // 更新按钮文本
-    optimizeBtn.querySelector('.button-text').textContent = chrome.i18n.getMessage('optimizeButton');
-    saveBtn.querySelector('.button-text').textContent = chrome.i18n.getMessage('saveButton');
-    promptInput.placeholder = chrome.i18n.getMessage('promptPlaceholder');
+    optimizeBtn.querySelector('.button-text').textContent = i18n.getMessage('optimizeButton');
+    saveBtn.querySelector('.button-text').textContent = i18n.getMessage('saveButton');
+    promptInput.placeholder = i18n.getMessage('promptPlaceholder');
     
     // 更新选项文本
     setSelectOptions(businessScenario, [
-      { index: 0, msgKey: 'scenarioGeneral' },
-      { index: 1, msgKey: 'scenarioCoding' },
-      { index: 2, msgKey: 'scenarioWriting' },
-      { index: 3, msgKey: 'scenarioOfficial' },
-      { index: 4, msgKey: 'scenarioTranslation' },
-      { index: 5, msgKey: 'scenarioAnalysis' },
-      { index: 6, msgKey: 'scenarioRoleplay' },
-      { index: 7, msgKey: 'scenarioMarketing' },
-      { index: 8, msgKey: 'scenarioEmail' },
-      { index: 9, msgKey: 'scenarioAcademic' },
-      { index: 10, msgKey: 'scenarioStorytelling' },
-      { index: 11, msgKey: 'scenarioInterview' },
-      { index: 12, msgKey: 'scenarioTeaching' },
-      { index: 13, msgKey: 'scenarioPresentation' }
+      { value: 'general', msgKey: 'scenarioGeneral' },
+      { value: 'coding', msgKey: 'scenarioCoding' },
+      { value: 'writing', msgKey: 'scenarioWriting' },
+      { value: 'official', msgKey: 'scenarioOfficial' },
+      { value: 'translation', msgKey: 'scenarioTranslation' },
+      { value: 'analysis', msgKey: 'scenarioAnalysis' },
+      { value: 'roleplay', msgKey: 'scenarioRoleplay' },
+      { value: 'marketing', msgKey: 'scenarioMarketing' },
+      { value: 'email', msgKey: 'scenarioEmail' },
+      { value: 'academic', msgKey: 'scenarioAcademic' },
+      { value: 'storytelling', msgKey: 'scenarioStorytelling' },
+      { value: 'interview', msgKey: 'scenarioInterview' },
+      { value: 'teaching', msgKey: 'scenarioTeaching' },
+      { value: 'presentation', msgKey: 'scenarioPresentation' }
     ]);
     
     setSelectOptions(outputFormat, [
-      { index: 0, msgKey: 'formatText' },
-      { index: 1, msgKey: 'formatXml' },
-      { index: 2, msgKey: 'formatJson' },
-      { index: 3, msgKey: 'formatMarkdown' }
+      { value: 'text', msgKey: 'formatText' },
+      { value: 'xml', msgKey: 'formatXml' },
+      { value: 'json', msgKey: 'formatJson' },
+      { value: 'markdown', msgKey: 'formatMarkdown' }
     ]);
   };
 
   // Set select options text
-  const setSelectOptions = (selectElement, options) => {
-    console.log('Setting select options for:', selectElement.id);
-    options.forEach(option => {
-      const text = chrome.i18n.getMessage(option.msgKey);
-      console.log(`- Option ${option.index}: ${option.msgKey} -> ${text}`);
-      selectElement.options[option.index].text = text;
+  const setSelectOptions = (selectElem, options) => {
+    const currentValue = selectElem.value;
+    selectElem.innerHTML = '';
+    options.forEach(({ value, msgKey }) => {
+      const option = document.createElement('option');
+      option.value = value;
+      option.textContent = i18n.getMessage(msgKey);
+      selectElem.appendChild(option);
     });
+    selectElem.value = currentValue;
   };
 
   // 加载框架列表
   const loadFrameworks = async () => {
     try {
-      frameworksData = await API.getFrameworks();
-      
-      // 清空现有选项
+      const frameworks = await API.getFrameworks();
+      const currentValue = optimizationFramework.value;
       optimizationFramework.innerHTML = '';
       
-      // 获取当前语言
-      const { language = 'en' } = await chrome.storage.local.get('language');
-      const nameKey = language === 'zh' ? 'cn_name' : 'en_name';
-      const descKey = language === 'zh' ? 'cn_description' : 'en_description';
+      // 根据当前语言选择对应的名称和描述
+      const isEnglish = i18n.getCurrentLanguage() === 'en';
+      const nameKey = isEnglish ? 'en_name' : 'cn_name';
+      const descKey = isEnglish ? 'en_description' : 'cn_description';
       
-      console.log('Loading frameworks with language:', language);
+      // 确保有默认选项
+      const defaultOption = document.createElement('option');
+      defaultOption.value = 'GENERAL';
+      defaultOption.textContent = isEnglish ? 'General Optimization' : '通用优化';
+      defaultOption.dataset.description = isEnglish 
+        ? 'This is a professional prompt optimization assistant framework...' 
+        : '这是一个专业的prompt优化助手框架...';
+      defaultOption.title = defaultOption.dataset.description;
+      optimizationFramework.appendChild(defaultOption);
       
-      // 添加新选项
-      frameworksData.forEach((framework, index) => {
+      frameworks.forEach(framework => {
+        if (framework.code === 'GENERAL') return; // 跳过通用优化，因为已经添加为默认选项
         const option = document.createElement('option');
-        option.value = framework.id;
+        option.value = framework.code;
         option.textContent = framework[nameKey];
         option.dataset.description = framework[descKey];
+        option.title = framework[descKey];
         optimizationFramework.appendChild(option);
       });
       
-      // 设置初始描述
-      if (frameworksData.length > 0) {
-        frameworkDescEl.textContent = frameworksData[0][descKey];
+      // 如果有之前选择的值且该值在新的选项中存在，则使用之前的值
+      // 否则使用默认值 'GENERAL'
+      const hasValue = Array.from(optimizationFramework.options)
+        .some(option => option.value === currentValue);
+      optimizationFramework.value = hasValue ? currentValue : 'GENERAL';
+      
+      // 更新框架描述
+      const selectedOption = optimizationFramework.options[optimizationFramework.selectedIndex];
+      if (selectedOption) {
+        frameworkDescEl.textContent = selectedOption.dataset.description;
       }
     } catch (error) {
-      console.error('Failed to load frameworks:', error);
+      console.error('Load frameworks error:', error);
       Utils.showToast(error.message, 'error');
+      
+      // 发生错误时也要确保有默认选项
+      const isEnglish = i18n.getCurrentLanguage() === 'en';
+      optimizationFramework.innerHTML = '';
+      const defaultOption = document.createElement('option');
+      defaultOption.value = 'GENERAL';
+      defaultOption.textContent = isEnglish ? 'General Optimization' : '通用优化';
+      defaultOption.dataset.description = isEnglish 
+        ? 'This is a professional prompt optimization assistant framework...' 
+        : '这是一个专业的prompt优化助手框架...';
+      defaultOption.title = defaultOption.dataset.description;
+      optimizationFramework.appendChild(defaultOption);
+      optimizationFramework.value = 'GENERAL';
+      
+      if (frameworkDescEl) {
+        frameworkDescEl.textContent = defaultOption.dataset.description;
+      }
     }
   };
 
-  const promptInput = document.getElementById('promptInput');
-  const optimizedInput = document.getElementById('optimizedInput');
-  const optimizedGroup = document.querySelector('.optimized-group');
-  const optimizeBtn = document.getElementById('optimizeBtn');
-  const saveBtn = document.getElementById('saveBtn');
-  const businessScenario = document.getElementById('businessScenario');
-  const optimizationFramework = document.getElementById('optimizationFramework');
-  const outputFormat = document.getElementById('outputFormat');
-  const frameworkDescEl = document.querySelector('.framework-desc');
+  // 监听存储变化，更新界面语言
+  chrome.storage.onChanged.addListener((changes, namespace) => {
+    if (namespace === 'local' && changes.language) {
+      console.log('Language changed in storage:', changes.language);
+      i18n.setLanguage(changes.language.newValue);
+      updateAllText();
+      loadFrameworks(); // 重新加载框架列表以更新语言
+    }
+  });
 
-  // 存储框架数据
-  let frameworksData = [];
-
-  // Set static text content
-  document.getElementById('extensionTitle').textContent = chrome.i18n.getMessage('extensionName');
-  document.getElementById('extensionDesc').textContent = chrome.i18n.getMessage('extensionDescription');
-  document.getElementById('sourcePromptLabel').textContent = chrome.i18n.getMessage('sourcePromptLabel');
-  document.getElementById('optimizedPromptLabel').textContent = chrome.i18n.getMessage('optimizedPromptLabel');
-  document.getElementById('businessScenarioLabel').textContent = chrome.i18n.getMessage('businessScenarioLabel');
-  document.getElementById('frameworkLabel').textContent = chrome.i18n.getMessage('frameworkLabel');
-  document.getElementById('formatLabel').textContent = chrome.i18n.getMessage('formatLabel');
-
-  // Set button text
-  optimizeBtn.querySelector('.button-text').textContent = chrome.i18n.getMessage('optimizeButton');
-  saveBtn.querySelector('.button-text').textContent = chrome.i18n.getMessage('saveButton');
-  promptInput.placeholder = chrome.i18n.getMessage('promptPlaceholder');
-
-  // 初始化
+  // 初始化界面
   updateAllText();
   loadFrameworks();
 
-  // 更新框架描述的事件监听器
-  optimizationFramework.addEventListener('change', (event) => {
-    const selectedOption = event.target.options[event.target.selectedIndex];
-    frameworkDescEl.textContent = selectedOption.dataset.description;
-  });
-
-  setSelectOptions(outputFormat, [
-    { index: 0, msgKey: 'formatText' },
-    { index: 1, msgKey: 'formatXml' },
-    { index: 2, msgKey: 'formatJson' },
-    { index: 3, msgKey: 'formatMarkdown' }
-  ]);
-
   // Update button states based on input
   const updateButtonStates = () => {
-    const hasText = promptInput.value.trim().length > 0;
-    optimizeBtn.disabled = !hasText;
-    saveBtn.disabled = !(hasText || optimizedInput.value.trim().length > 0);
+    const hasPrompt = promptInput.value.trim().length > 0;
+    const hasOptimized = optimizedInput.value.trim().length > 0;
+    
+    optimizeBtn.disabled = !hasPrompt;
+    saveBtn.disabled = !hasOptimized;
   };
 
   // Listen for input changes
@@ -148,68 +192,178 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Add loading state class
   const setLoading = (button, isLoading) => {
-    button.disabled = isLoading;
+    const loadingClass = 'loading';
     if (isLoading) {
-      button.classList.add('loading');
+      button.classList.add(loadingClass);
+      button.disabled = true;
     } else {
-      button.classList.remove('loading');
-      updateButtonStates(); // Restore correct disabled state
+      button.classList.remove(loadingClass);
+      button.disabled = false;
     }
   };
 
+  // 优化按钮点击事件
   optimizeBtn.addEventListener('click', async () => {
     const prompt = promptInput.value.trim();
     if (!prompt) return;
 
-    setLoading(optimizeBtn, true);
     try {
-      Utils.showToast(chrome.i18n.getMessage('optimizingPrompt'));
+      setLoading(optimizeBtn, true);
+      
+      // 获取当前选中的框架的description
       const selectedOption = optimizationFramework.options[optimizationFramework.selectedIndex];
-      const optimizedPrompt = await API.optimizePrompt(prompt, {
+      const frameworkDescription = selectedOption.getAttribute('data-description');
+      
+      console.log('Selected framework description:', frameworkDescription);
+      
+      const result = await API.optimizePrompt(prompt, {
         businessScenario: businessScenario.value,
-        frameworkDescription: selectedOption.dataset.description,
+        frameworkDescription: frameworkDescription,
         outputFormat: outputFormat.value
       });
       
-      // 先设置文本内容
-      optimizedInput.value = optimizedPrompt;
+      console.log('Optimization result:', result);
       
-      // 移除内联样式
-      optimizedGroup.style.removeProperty('display');
+      // 确保优化结果显示区域可见并设置文本
+      if (optimizedGroup) {
+        optimizedGroup.classList.add('show');
+        console.log('Showing optimized group');
+        
+        // 等待动画完成后滚动到底部
+        setTimeout(() => {
+          window.scrollTo({
+            top: document.body.scrollHeight,
+            behavior: 'smooth'
+          });
+        }, 300);
+      } else {
+        console.error('optimizedGroup not found');
+      }
       
-      // 添加显示类
-      optimizedGroup.classList.add('show');
+      if (optimizedInput) {
+        optimizedInput.value = result || '';
+        console.log('Setting optimized input value:', result);
+      } else {
+        console.error('optimizedInput not found');
+      }
       
-      // 等待过渡动画完成后滚动
-      setTimeout(() => {
-        window.scrollTo({
-          top: optimizedGroup.offsetTop - 20,
-          behavior: 'smooth'
-        });
-      }, 300);
+      // 更新按钮状态
+      updateButtonStates();
       
-      Utils.showToast(chrome.i18n.getMessage('optimizedSuccess'), 'success');
+      // 如果优化成功，显示成功提示
+      if (result) {
+        Utils.showToast(i18n.getMessage('optimizedSuccess'), 'success');
+      }
+      
     } catch (error) {
+      console.error('Optimize error:', error);
       Utils.showToast(error.message, 'error');
+      // 发生错误时隐藏优化结果区域
+      if (optimizedGroup) {
+        optimizedGroup.classList.remove('show');
+      }
     } finally {
       setLoading(optimizeBtn, false);
     }
   });
 
+  // 保存按钮点击事件
   saveBtn.addEventListener('click', async () => {
-    const prompt = promptInput.value.trim();
+    const sourcePrompt = promptInput.value.trim();
     const optimizedPrompt = optimizedInput.value.trim();
-    if (!prompt && !optimizedPrompt) return;
+    if (!sourcePrompt || !optimizedPrompt) return;
 
-    setLoading(saveBtn, true);
     try {
-      Utils.showToast(chrome.i18n.getMessage('savingPrompt'));
-      await API.savePrompt(prompt || optimizedPrompt, optimizedPrompt);
-      Utils.showToast(chrome.i18n.getMessage('savedSuccess'), 'success');
+      setLoading(saveBtn, true);
+      await API.savePrompt(sourcePrompt, optimizedPrompt);
+      
+      Utils.showToast(i18n.getMessage('promptSaved'), 'success');
     } catch (error) {
+      console.error('Save error:', error);
       Utils.showToast(error.message, 'error');
     } finally {
       setLoading(saveBtn, false);
     }
   });
-}); 
+
+  // 更新框架描述的事件监听器
+  optimizationFramework.addEventListener('change', (event) => {
+    const selectedOption = event.target.options[event.target.selectedIndex];
+    frameworkDescEl.textContent = selectedOption.dataset.description;
+  });
+
+  // 创建 tooltip 元素
+  const tooltip = document.createElement('div');
+  tooltip.className = 'tooltip';
+  document.body.appendChild(tooltip);
+  
+  let tooltipTimeout;
+  
+  // 添加 tooltip 显示/隐藏功能
+  const showTooltip = (text, x, y) => {
+    if (!text) return;
+    
+    // 清除之前的定时器
+    if (tooltipTimeout) {
+      clearTimeout(tooltipTimeout);
+      tooltipTimeout = null;
+    }
+    
+    tooltip.textContent = text;
+    tooltip.classList.add('show');
+    
+    // 计算位置，只需要考虑垂直方向
+    const rect = tooltip.getBoundingClientRect();
+    const viewportHeight = window.innerHeight;
+    
+    // 默认显示在选择框上方
+    let top = y - rect.height - 1;
+    
+    // 如果会超出上边界，显示在选择框下方
+    if (top < 0) {
+      top = y + 24;
+    }
+    
+    tooltip.style.top = top + 'px';
+  };
+  
+  const hideTooltip = (immediate = false) => {
+    if (immediate) {
+      tooltip.classList.remove('show');
+      if (tooltipTimeout) {
+        clearTimeout(tooltipTimeout);
+        tooltipTimeout = null;
+      }
+    } else {
+      // 添加 200ms 延迟，避免鼠标移动时闪烁
+      tooltipTimeout = setTimeout(() => {
+        tooltip.classList.remove('show');
+      }, 200);
+    }
+  };
+  
+  // 为 optimizationFramework 添加 tooltip 事件
+  optimizationFramework.addEventListener('mouseover', (event) => {
+    if (event.target.tagName === 'OPTION') {
+      const rect = optimizationFramework.getBoundingClientRect();
+      showTooltip(event.target.dataset.description, rect.left + rect.width / 2, rect.top);
+    }
+  });
+  
+  optimizationFramework.addEventListener('mouseout', (event) => {
+    // 检查是否真的移出了 select 元素
+    const relatedTarget = event.relatedTarget;
+    if (!optimizationFramework.contains(relatedTarget)) {
+      hideTooltip();
+    }
+  });
+  
+  optimizationFramework.addEventListener('change', () => {
+    hideTooltip(true);
+  });
+  
+  // 在页面滚动时隐藏 tooltip
+  window.addEventListener('scroll', () => {
+    hideTooltip(true);
+  });
+});

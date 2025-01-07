@@ -9,7 +9,7 @@
   },
   "web_accessible_resources": [{
     "resources": ["_locales/*/*.json"],
-    "matches": ["<all_urls>"]
+    "matches": ["chrome-extension://*/*"]
   }],
   "permissions": [
     "storage"
@@ -32,6 +32,6 @@
     "128": "assets/icon128.png"
   },
   "host_permissions": [
-    "https://prompt-api.playwithai.fun/*"
+    "https://prompt-api.playwithai.fun/api/prompts/*"
   ]
-} 
+}

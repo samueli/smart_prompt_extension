@@ -20,5 +20,14 @@ chrome.storage.onChanged.addListener((changes, namespace) => {
       oldValue: changes.language.oldValue,
       newValue: changes.language.newValue
     });
+    
+    // 通知所有打开的扩展页面重新加载
+    chrome.tabs.query({}, (tabs) => {
+      tabs.forEach((tab) => {
+        if (tab.url && tab.url.startsWith('chrome-extension://')) {
+          chrome.tabs.reload(tab.id);
+        }
+      });
+    });
   }
 }); 
